@@ -1,4 +1,5 @@
-import  'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:login_page/screens/home_screen.dart';
 import 'package:login_page/screens/signup_screen.dart';
 import 'package:login_page/utils/color_utils.dart';
 
@@ -12,7 +13,7 @@ class SingInScreen extends StatefulWidget {
 }
 
 class _SingInScreenState extends State<SingInScreen> {
-  final TextEditingController _passwordTexrController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
 
   @override
@@ -40,19 +41,30 @@ class _SingInScreenState extends State<SingInScreen> {
               children: <Widget>[
                 logoWidget('assets/img/as1.png'),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                resuableTextField('Enter Username', Icons.person_outline, false,
+                resuableTextField('Enter Email', Icons.person_outline, false,
                     _emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 resuableTextField('Enter Password', Icons.lock_outline, false,
-                    _passwordTexrController),
+                    _passwordTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                button(context, true, () {}),
+                button(
+                  context,
+                  true,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                ),
                 signUpOption(),
               ],
             ),
@@ -80,7 +92,7 @@ class _SingInScreenState extends State<SingInScreen> {
             );
           },
           child: const Text(
-              'Sign Up',
+            'Sign Up',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
