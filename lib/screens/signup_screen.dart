@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_page/screens/signin_screen.dart';
+import 'package:login_page/screens/home_screen.dart';
 
 import '../reuseble_widgets/reuseable_widget.dart';
 import '../utils/color_utils.dart';
@@ -70,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  resuableTextField('Enter Password', Icons.lock_outline, false,
+                  resuableTextField('Enter Password', Icons.lock_outline, true,
                       _passwordTextController),
                   const SizedBox(
                     height: 20,
@@ -79,11 +80,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     context,
                     false,
                     () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SingInScreen(),
-                        ),
+                      FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text,
+                      )
+                          .then(
+                        (value) {
+                          print("Created New Account");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        },
+                      ).onError(
+                        (error, stackTrace) {
+                          print("Error ${error.toString()}");
+                        },
                       );
                     },
                   ),

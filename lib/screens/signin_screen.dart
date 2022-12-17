@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_page/screens/home_screen.dart';
 import 'package:login_page/screens/signup_screen.dart';
@@ -48,7 +49,7 @@ class _SingInScreenState extends State<SingInScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                resuableTextField('Enter Password', Icons.lock_outline, false,
+                resuableTextField('Enter Password', Icons.lock_outline, true,
                     _passwordTextController),
                 const SizedBox(
                   height: 20,
@@ -57,11 +58,23 @@ class _SingInScreenState extends State<SingInScreen> {
                   context,
                   true,
                   () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
+                    FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text)
+                        .then(
+                      (value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                        );
+                      },
+                    ).onError(
+                      (error, stackTrace) {
+                        print("Error ${error.toString()}");
+                      },
                     );
                   },
                 ),
